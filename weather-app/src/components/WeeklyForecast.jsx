@@ -17,12 +17,20 @@ function WeeklyForecast({ weather, unit }) {
     95: { icon: '⛈️', desc: 'Thunderstorm', bg: 'bg-purple-200' },
   };
 
-  const getTempColor = (temp) => {
+  const getTempColor = (temp, unit) => {
+  if (unit === 'fahrenheit') {
+    if (temp > 86) return 'text-red-500';         // ~30°C
+    if (temp > 68) return 'text-orange-500';      // ~20°C
+    if (temp > 50) return 'text-yellow-600';      // ~10°C
+    return 'text-blue-500';
+  } else {
     if (temp > 30) return 'text-red-500';
     if (temp > 20) return 'text-orange-500';
     if (temp > 10) return 'text-yellow-600';
     return 'text-blue-500';
-  };
+  }
+};
+
 
   if (
     !weather ||
@@ -60,7 +68,7 @@ function WeeklyForecast({ weather, unit }) {
         const maxTemp = convertTemp(day.max, unit);
         const minTemp = convertTemp(day.min, unit);
 
-        const tempColor = getTempColor(maxTemp);
+        const tempColor = getTempColor(maxTemp, unit);
 
         return (
           <div
@@ -72,8 +80,9 @@ function WeeklyForecast({ weather, unit }) {
             <div className="text-3xl my-2">{weather.icon}</div>
             <p className="text-xs text-gray-700">{weather.desc}</p>
             <p className={`text-sm font-semibold mt-1 ${tempColor}`}>
-              {Math.round(maxTemp)}° / {Math.round(minTemp)}° {unit}
+              {Math.round(maxTemp)}° / {Math.round(minTemp)}° {unit === 'celsius' ? '°C' : '°F'}
             </p>
+
           </div>
         );
       })}

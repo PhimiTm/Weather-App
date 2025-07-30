@@ -125,7 +125,7 @@ function Sidebar({ onWeatherChange, unit }) {
   const unitSymbol = unit === 'fahrenheit' ? '°F' : '°C';
 
   return (
-    <div className="space-y-6 text-center text-gray-800 p-6">
+    <div className="space-y-6 text-center text-gray-800 p-6  dark:bg-gray-800 dark:text-white">
       {/* Search Input */}
       <form onSubmit={handleSearch} className="flex gap-2">
         <input
@@ -137,7 +137,7 @@ function Sidebar({ onWeatherChange, unit }) {
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
         >
           Search
         </button>
@@ -145,7 +145,7 @@ function Sidebar({ onWeatherChange, unit }) {
 
       {/* Weather Info */}
       {loading ? (
-        <p className="text-gray-500">Loading weather...</p>
+        <p className="text-gray-500 dark:text-gray-400">Loading weather...</p>
       ) : current ? (
         <>
           <div className="flex flex-col items-center">
@@ -153,13 +153,13 @@ function Sidebar({ onWeatherChange, unit }) {
             <div className="text-6xl font-bold mt-2">
               {Math.round(convertTemp(current.temperature_2m, unit))}{unitSymbol}
             </div>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
               {weatherDescriptions[current.weathercode] || 'Unknown'}
             </p>
           </div>
 
           <div className="text-sm mt-4">
-            <p className="font-medium text-blue-600">{location.name}</p>
+            <p className="font-medium text-blue-600 dark:text-blue-400">{location.name}</p>
             <p>{today}</p>
           </div>
 
@@ -185,7 +185,7 @@ function Sidebar({ onWeatherChange, unit }) {
                             referrerPolicy="no-referrer-when-downgrade"
                             src={`https://www.openstreetmap.org/export/embed.html?bbox=${location.lon - 0.05}%2C${location.lat - 0.05}%2C${location.lon + 0.05}%2C${location.lat + 0.05}&layer=mapnik&marker=${location.lat}%2C${location.lon}`}
                         />
-                        <p className="text-xs mt-1 text-gray-500">
+                        <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">
                             Weather Forecast for <span className="font-medium">{location.name}</span>
                         </p>
                     </div>

@@ -59,7 +59,7 @@ function HourlyForecast({ hourly, unit = "celsius" }) {
 
   return (
     <div className="mb-10">
-      <h2 className="text-2xl font-semibold mb-4">Hourly Forecast</h2>
+      <h2 className="text-2xl font-semibold mb-4 dark:text-white">Hourly Forecast</h2>
       <div className="flex overflow-x-auto space-x-4 pb-2">
         {hours.map((hour, i) => (
           <div
@@ -71,8 +71,9 @@ function HourlyForecast({ hourly, unit = "celsius" }) {
             <p className="text-sm text-gray-600">{hour.formattedHour}</p>
             <p className="text-2xl">{getWeatherEmoji(hour.code)}</p>
             <p className="text-lg font-bold">
-              {convertTemp(hour.temperature, unit)}°{unitAbbreviation}
+              {Math.round(convertTemp(hour.temperature, unit))}°{unitAbbreviation}
             </p>
+
             {hour.wind !== null && (
               <p className="text-xs text-gray-500">💨 {hour.wind} km/h</p>
             )}

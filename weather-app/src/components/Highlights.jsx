@@ -38,6 +38,22 @@ function Highlights({ weather, unit }) {
     return visibility >= 10000 ? 'Great 😎' : 'Average 😐';
   };
 
+  const getCompassDirection = (degree) => {
+  if (degree == null || isNaN(degree)) return 'N/A';
+  
+  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const index = Math.round(degree / 45) % 8;
+  return directions[index];
+};
+
+const getWindDirection = (degree) => {
+  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  const index = Math.round(degree / 45) % 8;
+  return directions[index];
+};
+
+
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <HighlightCard title="Current Temperature">
@@ -53,16 +69,52 @@ function Highlights({ weather, unit }) {
       </HighlightCard>
 
       <HighlightCard title="Wind Status">
-        <p className="text-3xl font-bold">{windSpeed != null ? `${windSpeed} km/h` : 'N/A'}</p>
-        <p className="text-sm text-gray-500">
-          Direction: {windDir != null ? `${windDir}°` : 'N/A'}
+        <p className="text-3xl font-bold">
+          {windSpeed != null ? `${windSpeed} km/h` : 'N/A'}
+        </p>
+        <p className="text-sm text-gray-500 flex items-center gap-1">
+          Direction: {windDir != null ? (
+            <>
+              {getWindDirection(windDir)}
+              <span
+                className="text-gray-400 ml-1 text-xs hover:text-gray-600 transition"
+                title={`${windDir}°`}
+              >
+                ℹ️
+              </span>
+
+            </>
+          ) : 'N/A'}
         </p>
       </HighlightCard>
 
-      <HighlightCard title="Sunrise & Sunset">
-        <p className="text-sm">🌅 {sunrise ? new Date(sunrise).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'}</p>
-        <p className="text-sm">🌇 {sunset ? new Date(sunset).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'}</p>
+
+
+      <HighlightCard title="">
+        <div className="flex items-center justify-between">
+          {/* Sunrise */}
+          <div className="text-center">
+            <h3 className="text-lg font-semibold mb-2 text-gray-700">Sunrise</h3>
+            <p className="text-xl font-semibold mt-1 text-yellow-500">
+              {sunrise ? new Date(sunrise).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'}
+            </p>
+          </div>
+
+          {/* Icon */}
+          <div className="text-6xl text-orange-400 mx-4">
+            <span role="img" aria-label="Sunrise and Sunset">🌄</span>
+          </div>
+
+          {/* Sunset */}
+          <div className="text-center">
+            <h3 className="text-lg font-semibold mb-2 text-gray-700">Sunset</h3>
+            <p className="text-xl font-semibold mt-1 text-orange-500">
+              {sunset ? new Date(sunset).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'}
+            </p>
+          </div>
+        </div>
       </HighlightCard>
+
 
       <HighlightCard title="Humidity">
         <p className="text-3xl font-bold">{humidity != null ? `${humidity}%` : 'N/A'}</p>
@@ -74,10 +126,10 @@ function Highlights({ weather, unit }) {
         <p className="text-sm text-gray-500">{getVisibilityLabel(visibility)}</p>
       </HighlightCard>
 
-      <HighlightCard title="Air Pressure">
+      {/* <HighlightCard title="Air Pressure">
         <p className="text-3xl font-bold">{pressure != null ? `${pressure} hPa` : 'N/A'}</p>
         <p className="text-sm text-gray-500">Standard: ~1013 hPa</p>
-      </HighlightCard>
+      </HighlightCard> */}
     </div>
   );
 }

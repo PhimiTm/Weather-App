@@ -42,7 +42,7 @@ function WeatherAdvice({ weather, unit }) {
       advice = 'Cold night — dress warmly!';
       emoji = '🌙';
     } else {
-      advice = 'Weather looks pleasant right now!';
+      advice = 'Weather looks pleasant right now! You might want to enjoy it outside.';
       emoji = '😊';
     }
   }
