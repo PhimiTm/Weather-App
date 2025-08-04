@@ -9,6 +9,8 @@ function Sidebar({ onWeatherChange, unit }) {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showMap, setShowMap] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
+
 
   const weatherIcons = {
     0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
@@ -71,6 +73,36 @@ function Sidebar({ onWeatherChange, unit }) {
   };
 
   useEffect(() => {
+  const fetchSuggestions = async () => {
+    if (searchQuery.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=5`
+      );
+      setSuggestions(res.data || []);
+      console.log("Fetched suggestions:", res.data); 
+    } catch (err) {
+      console.error("Failed to fetch city suggestions:", err);
+      setSuggestions([]);
+    }
+  };
+
+  const debounce = setTimeout(fetchSuggestions, 300);
+  return () => clearTimeout(debounce);
+}, [searchQuery]);
+
+const handleSuggestionClick = (suggestion) => {
+  const city = suggestion.display_name;
+  setSearchQuery(city);
+  setSuggestions([]);
+  fetchCityCoords(city);
+};
+
+  useEffect(() => {
     const defaultLat = -26.2041;
     const defaultLon = 28.0473;
     const defaultCity = "Johannesburg";
@@ -127,21 +159,38 @@ function Sidebar({ onWeatherChange, unit }) {
   return (
     <div className="space-y-6 text-center text-gray-800 p-6  dark:bg-gray-800 dark:text-white">
       {/* Search Input */}
-      <form onSubmit={handleSearch} className="flex gap-2">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search city..."
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
-        >
-          Search
-        </button>
+      <form onSubmit={handleSearch} className="relative flex flex-col gap-2">
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search city..."
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
+          >
+            Search
+          </button>
+        </div>
+
+        {suggestions.length > 0 && (
+          <ul className="absolute top-full left-0 right-0 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md mt-1 shadow-lg z-50 max-h-48 overflow-y-auto">
+            {suggestions.map((sugg, index) => (
+              <li
+                key={index}
+                onClick={() => handleSuggestionClick(sugg)}
+                className="px-4 py-2 cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-700"
+              >
+                {sugg.display_name.split(",").slice(0, 2).join(", ")}
+              </li>
+            ))}
+          </ul>
+        )}
       </form>
+
 
       {/* Weather Info */}
       {loading ? (

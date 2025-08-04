@@ -1,5 +1,6 @@
 import React from 'react';
 import { convertTemp } from "../utils/convertTemp";
+import { Wind } from 'lucide-react';
 
 function Highlights({ weather, unit }) {
     if (!weather) return <p className="text-gray-500">Loading highlights...</p>;
@@ -40,17 +41,30 @@ function Highlights({ weather, unit }) {
 
   const getCompassDirection = (degree) => {
   if (degree == null || isNaN(degree)) return 'N/A';
-  
+
   const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   const index = Math.round(degree / 45) % 8;
   return directions[index];
 };
 
 const getWindDirection = (degree) => {
-  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  if (degree == null || isNaN(degree)) return 'N/A';
+
+  const fullDirections = [
+    'North Winds',
+    'North Eastly Winds',
+    'East Winds',
+    'South Eastly Winds',
+    'South Winds',
+    'South Westly Winds',
+    'West Winds',
+    'North Westly Winds'
+  ];
+
   const index = Math.round(degree / 45) % 8;
-  return directions[index];
+  return fullDirections[index];
 };
+
 
 
 
@@ -73,16 +87,18 @@ const getWindDirection = (degree) => {
           {windSpeed != null ? `${windSpeed} km/h` : 'N/A'}
         </p>
         <p className="text-sm text-gray-500 flex items-center gap-1">
-          Direction: {windDir != null ? (
+           { windDir != null ? (
             <>
+              <Wind className="text-blue-400" size={30} />
               {getWindDirection(windDir)}
+              
               <span
                 className="text-gray-400 ml-1 text-xs hover:text-gray-600 transition"
                 title={`${windDir}°`}
               >
                 ℹ️
               </span>
-
+              
             </>
           ) : 'N/A'}
         </p>
