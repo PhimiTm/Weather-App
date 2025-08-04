@@ -7,6 +7,8 @@ import HourlyForecast from './components/HourlyForecast';
 import { fetchWeather } from './utils/fetchWeather';
 import WeatherAdvice from './components/weatherAdvice';
 import DarkModeToggle from './components/DarkModeToggle';
+import WeatherHeadlines from './components/WeatherHeadlines';
+import WeatherAdvice from './WeatherAdvice';
 
 
 
