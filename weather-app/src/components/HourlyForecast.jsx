@@ -1,11 +1,21 @@
 import React from 'react';
 import { convertTemp } from '../utils/convertTemp'; // Adjust path if needed
 
-const getWeatherEmoji = (code) => {
+const getWeatherEmoji = (code, hour) => {
+  // Check if it's nighttime (between 6 PM and 6 AM)
+  const isNight = hour < 6 || hour >= 18;
+
   const mapping = {
-    0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
-    45: '🌫️', 48: '🌫️', 51: '🌦️',
-    61: '🌧️', 71: '🌨️', 95: '⛈️',
+    0: isNight ? '🌑' : '☀️',           // Clear sky (dark moon for night)
+    1: isNight ? '☁️🌑' : '🌤️',        // Partly cloudy
+    2: isNight ? '☁️' : '⛅',           // Cloudy
+    3: '☁️',                           // Overcast
+    45: '🌫️',                          // Foggy
+    48: '🌫️',                          // Depositing rime fog
+    51: isNight ? '🌧️' : '🌦️',        // Light drizzle
+    61: '🌧️',                          // Rain
+    71: '🌨️',                          // Snow
+    95: '⛈️',                          // Thunderstorm
     default: '❓'
   };
   return mapping[code] || mapping.default;
@@ -60,7 +70,7 @@ function HourlyForecast({ hourly, unit = "celsius" }) {
   return (
     <div className="mb-10">
       <h2 className="text-2xl font-semibold mb-4 dark:text-white">Hourly Forecast</h2>
-      <div className="flex overflow-x-auto space-x-4 pb-2">
+      <div className="flex overflow-x-auto space-x-9 pb-2">
         {hours.map((hour, i) => (
           <div
             key={i}
@@ -69,7 +79,7 @@ function HourlyForecast({ hourly, unit = "celsius" }) {
             }`}
           >
             <p className="text-sm text-gray-600">{hour.formattedHour}</p>
-            <p className="text-2xl">{getWeatherEmoji(hour.code)}</p>
+            <p className="text-2xl">{getWeatherEmoji(hour.code, hour.time.getHours())}</p>
             <p className="text-lg font-bold">
               {Math.round(convertTemp(hour.temperature, unit))}°{unitAbbreviation}
             </p>

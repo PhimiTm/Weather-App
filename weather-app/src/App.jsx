@@ -98,7 +98,7 @@ if (
 
           {weather?.location_name && (
           <>
-            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2 dark:text-white">
+            <h2 className="text-4xl font-semibold text-center text-gray-800 mb-7 dark:text-white">
               Weather Forecast for {weather.location_name}
             </h2>
             <div className="flex justify-center mb-4">

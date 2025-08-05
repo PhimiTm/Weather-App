@@ -202,12 +202,12 @@ const handleSuggestionClick = (suggestion) => {
             <div className="text-6xl font-bold mt-2">
               {Math.round(convertTemp(current.temperature_2m, unit))}{unitSymbol}
             </div>
-            <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
+            <p className="text-md text-gray-500 mt-1 dark:text-gray-400">
               {weatherDescriptions[current.weathercode] || 'Unknown'}
             </p>
           </div>
 
-          <div className="text-sm mt-4">
+          <div className="text-lg mt-4">
             <p className="font-medium text-blue-600 dark:text-blue-400">{location.name}</p>
             <p>{today}</p>
           </div>
@@ -224,7 +224,7 @@ const handleSuggestionClick = (suggestion) => {
                 </button>
 
                 {showMap && (
-                    <div className="mt-3 rounded-xl overflow-hidden shadow-lg">
+                    <div className="mt-9 rounded-xl overflow-hidden shadow-lg">
                         <iframe
                             title="Location Map"
                             width="100%"
