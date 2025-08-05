@@ -29,7 +29,7 @@ const WeatherHeadlines = () => {
 
 
   return (
-    <div className="mt-8">
+    <div className="mt-13">
   <h2 className="text-2xl font-semibold mb-4 dark:text-white">🌦️ Today’s Weather Headlines</h2>
   {loading ? (
     <p>Loading news...</p>

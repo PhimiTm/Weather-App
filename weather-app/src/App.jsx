@@ -76,24 +76,26 @@ if (
       {/* Main Content */}
       <main className="w-full md:ml-[24.333333%] lg:ml-1/4 min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 dark:from-gray-600 dark:to-gray-800 transition-colors duration-200">
         <div className="p-6">
-          <div className="flex items-center justify-end mb-4 space-x-3">
+          {/* Replace the two separate div containers with one */}
+          <div className="flex items-center justify-between mb-4">
+            {/* Dark Mode Toggle - Left side */}
             <DarkModeToggle />
-            {/* Unit toggle switch */}
-          </div>
-
-          <div className="flex items-center justify-end mb-4 space-x-3">
-            <span className="text-sm font-medium text-gray-700 dark:text-white">°C</span>
-            <label className="relative inline-block w-12 h-6">
-              <input
-                type="checkbox"
-                checked={unit === 'fahrenheit'}
-                onChange={toggleUnit}
-                className="sr-only peer"
-              />
-              <div className="w-full h-full bg-gray-300 rounded-full peer-checked:bg-blue-500 transition"></div>
-              <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform peer-checked:translate-x-6"></div>
-            </label>
-            <span className="text-sm font-medium text-gray-700 dark:text-white">°F</span>
+            
+            {/* Temperature Toggle - Right side */}
+            <div className="flex items-center space-x-3">
+              <span className="text-sm font-medium text-gray-700 dark:text-white">°C</span>
+              <label className="relative inline-block w-12 h-6">
+                <input
+                  type="checkbox"
+                  checked={unit === 'fahrenheit'}
+                  onChange={toggleUnit}
+                  className="sr-only peer"
+                />
+                <div className="w-full h-full bg-gray-300 rounded-full peer-checked:bg-blue-500 transition"></div>
+                <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform peer-checked:translate-x-6"></div>
+              </label>
+              <span className="text-sm font-medium text-gray-700 dark:text-white">°F</span>
+            </div>
           </div>
 
           {weather?.location_name && (
